@@ -1,0 +1,24 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="MyTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/a</item>
+        <item name="colorPrimaryDark">@color/b</item>
+        <item name="tabBackgroundColor">@color/c</item>
+        <item name="toolbarBackgroundColor">@color/pantone331c</item>
+        <item name="textDarkColor">@color/pantoneDark331c</item>
+        <item name="textTabColor">@color/pantoneDark331c</item>
+        <item name="textWhiteColor">@color/myTextLight</item>
+        <item name="detailBackground">@color/myLayoutColor</item>
+        <item name="imageTransparentOverlay">@color/pantoneTransparent</item>
+        <item name="colorForText">@color/colorTextBlack</item>
+        <item name="greyTextColor">@color/greyTextColor</item>
+    </style>
+
+</resources>

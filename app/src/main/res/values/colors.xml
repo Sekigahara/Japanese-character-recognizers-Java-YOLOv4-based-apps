@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <!-- Try Gradation -->
+    <color name="colorPrimaryGradation">#0CCC26</color>
+    <color name="colorPrimaryDarkGradation">#3E9110</color>
+    <color name="colorAccentGradation">#CCDA03</color>
+    <color name="colorTextWhite">#FFFFFF</color>
+    <color name="colorTextBlack">#000000</color>
+
+    <!--My Color-->
+    <color name="myPrimary">#128C7E</color>
+    <color name="myPrimaryDark">#075e54</color>
+    <color name="myText">#41a290</color>
+    <color name="myTextLight">#FFFFFF</color>
+    <color name="myLightBackground">#a7e6d7</color>
+    <color name="myTransparent">#8c128C7E</color>
+    <color name="myLayoutColor">#EEEEEE</color>
+
+    <!--pallete one-->
+    <color name="pantoneDark331c">#017787</color>
+    <color name="pantoneOne">#01B0C8</color><!--3DAEBD-->
+    <color name="pantoneTwo">#30CBE1</color>
+    <color name="pantoneTree">#5BD4E5</color>
+    <color name="pantoneTransparent">#6605c3de</color>
+    <color name="pantoneDarkTransparent">#8c017787</color>
+    <color name="pantone331c">#05c3de</color>
+    <color name="greyTextColor">#a9a9a9</color>
+
+    <color name="a">#128C7E</color>
+    <color name="b">#075e54</color>
+    <color name="c">#41a290</color>
+</resources>

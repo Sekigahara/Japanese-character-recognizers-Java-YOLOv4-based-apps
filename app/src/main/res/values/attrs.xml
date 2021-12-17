@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <attr name="colorPrimary" format="color" />
+    <attr name="colorPrimaryDark" format="color" />
+    <attr name="tabBackgroundColor" format="color" />
+    <attr name="toolbarBackgroundColor" format="color" />
+    <attr name="textDarkColor" format="color" />
+    <attr name="buttonDefault" format="color" />
+    <attr name="buttonDanger" format="color" />
+    <attr name="textTabColor" format="color" />
+    <attr name="textWhiteColor" format="color" />
+    <attr name="detailBackground" format="color" />
+    <attr name="imageTransparentOverlay" format="color" />
+    <attr name="layoutColor" format="color" />
+    <attr name="panelColor" format="color" />
+    <attr name="colorButtonText" format="color"/>
+    <attr name="colorForText" format="color"/>
+    <attr name="greyTextColor" format="color"/>
+
+    <declare-styleable name="ButtonBarContainerTheme">
+        <attr name="metaButtonBarStyle" format="reference" />
+        <attr name="metaButtonBarButtonStyle" format="reference" />
+    </declare-styleable>
+</resources>
