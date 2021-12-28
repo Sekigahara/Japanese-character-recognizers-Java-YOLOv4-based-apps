@@ -13,6 +13,7 @@ import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -61,8 +62,6 @@ public class MainMenuFragment extends BaseFragment<MainMenuActivity, MainMenuCon
     }
 
     public void redirectPageCamera(Uri uriFilePath){
-        Toast.makeText(getActivity(), uriFilePath.getPath(), Toast.LENGTH_LONG).show();
-
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uriFilePath);
@@ -86,18 +85,15 @@ public class MainMenuFragment extends BaseFragment<MainMenuActivity, MainMenuCon
 
     public void onActivityResult(int requestCode, int resultCode, Intent data){
         if(requestCode == CAMERA_PIC_REQUEST){
-            Intent intent = new Intent(activity, CameraActivity.class);
-            intent.putExtra("uri", uriFilePath.toString());
-            startActivity(intent);
-            activity.finish();
+            activity.finishActivity(requestCode);
+            cameraActivityRedirect(uriFilePath.toString());
         }
     }
 
-    private byte[] bitmapToByte(Bitmap bitmapData){
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmapData.compress(Bitmap.CompressFormat.PNG, 10, stream);
-        byte[] byteArray = stream.toByteArray();
-
-        return byteArray;
-     }
+    private void cameraActivityRedirect(String path){
+        Intent intent = new Intent(activity, CameraActivity.class);
+        intent.putExtra("uri", uriFilePath.toString());
+        startActivity(intent);
+        activity.finish();
+    }
 }

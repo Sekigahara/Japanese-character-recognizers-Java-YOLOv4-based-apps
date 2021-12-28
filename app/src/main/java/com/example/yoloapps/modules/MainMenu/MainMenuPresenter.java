@@ -38,7 +38,6 @@ public class MainMenuPresenter implements MainMenuContract.Presenter{
             Calendar calendar = Calendar.getInstance();
 
             File file =  new File(dir, "IMG_" + calendar.getTimeInMillis());
-            Toast.makeText(context, file.getPath(), Toast.LENGTH_LONG).show();
             Uri uriFilePath = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
 
             view.redirectPageCamera(uriFilePath);
