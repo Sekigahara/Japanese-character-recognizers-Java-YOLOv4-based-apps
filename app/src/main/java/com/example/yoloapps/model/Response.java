@@ -10,11 +10,11 @@ public class Response implements Serializable {
     @Expose
     public String main_image;
 
-    //@SerializedName("Cropped_Image")
-    //@Expose
-    //public byte[][] cropped_image;
+    @SerializedName("Cropped_Image")
+    @Expose
+    public String[] cropped_image;
 
-    //@SerializedName("Predicted")
-    //@Expose
-    //public String[] predicted;
+    @SerializedName("Predicted")
+    @Expose
+    public String[] predicted;
 }

@@ -2,36 +2,35 @@ package com.example.yoloapps.modules.Camera;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.ParcelFileDescriptor;
-import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.yoloapps.R;
 import com.example.yoloapps.base.BaseFragment;
 import com.example.yoloapps.model.Response;
-import com.example.yoloapps.modules.MainActivity;
+import com.example.yoloapps.model.SubResponse;
 import com.example.yoloapps.modules.MainMenu.MainMenuActivity;
-import com.example.yoloapps.modules.Camera.CameraContract;
-import com.example.yoloapps.modules.Camera.CameraPresenter;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileDescriptor;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 
 public class CameraFragment extends BaseFragment<CameraActivity, CameraContract.Presenter> implements CameraContract.View{
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView mRecyclerview;
     ImageView ivPhoto;
+    TextView textView;
     Uri imagePath;
 
     public CameraFragment(Uri imagePath){
@@ -44,63 +43,50 @@ public class CameraFragment extends BaseFragment<CameraActivity, CameraContract.
         mPresenter = new CameraPresenter(this, activity);
         mPresenter.start();
 
+        detect(imagePath);
+
+        mRecyclerview = fragmentView.findViewById(R.id.rvCamera);
+        mRecyclerview.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(activity);
+        mRecyclerview.setLayoutManager(mLayoutManager);
+
         // Set Main Image
+        textView = fragmentView.findViewById(R.id.textView);
         ivPhoto = fragmentView.findViewById(R.id.ivMainPhoto);
 
-        detect(imagePath);
+        textView.setText("Result : ");
 
         return fragmentView;
     }
 
-    public void detect(Uri uriPath){
-        Bitmap tempImg = uriToBitmap(imagePath);
-        String encodedImg = encodeToBase64(tempImg);
+    private void detect(Uri uriPath){
+        Bitmap tempImg = mPresenter.rotationCheck(uriPath);
+        String encodedImg = mPresenter.encodeToBase64(tempImg);
 
         mPresenter.getDetection(encodedImg);
     }
 
-    private String encodeToBase64(Bitmap image){
-        ByteArrayOutputStream byteData = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 0 , byteData);
-        byte[] b = byteData.toByteArray();
-        String encodedImg = Base64.encodeToString(b, Base64.DEFAULT);
-
-        return encodedImg;
-    }
-
     public void detectionCallback(Response response, boolean status){
         if(response != null && status != false){
-            Bitmap image = byteToBitmap(response.main_image.getBytes(StandardCharsets.UTF_8));
+            Bitmap image = mPresenter.byteToBitmap(response.main_image.getBytes(StandardCharsets.UTF_8));
+
             if(image == null)
                 Toast.makeText(activity, "Image is Null", Toast.LENGTH_LONG).show();
             else
                 ivPhoto.setImageBitmap(image);
+
+            if(response.predicted != null){
+                final ArrayList<SubResponse> subResponses = mPresenter.recycleData(response.cropped_image, response.predicted);
+
+                mAdapter = new RecyclerViewCamera(subResponses);
+                mRecyclerview.setAdapter(mAdapter);
+            }
         }else{
             Toast.makeText(activity, "No Characters Detected", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(activity, MainMenuActivity.class);
             startActivity(intent);
             activity.finish();
         }
-    }
-
-    private Bitmap byteToBitmap(byte[] data){
-        byte[] decodedString = Base64.decode(data, Base64.DEFAULT);
-
-        return BitmapFactory.decodeByteArray(decodedString, 0, data.length);
-    }
-
-    private Bitmap uriToBitmap(Uri uriPath){
-        Bitmap img = null;
-        try {
-            ParcelFileDescriptor parcelFileDescriptor = getContext().getContentResolver().openFileDescriptor(uriPath, "r");
-            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-
-            img = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-        return img;
     }
 
     public void setBack(ImageButton btBack){
