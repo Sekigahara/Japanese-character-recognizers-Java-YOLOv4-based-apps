@@ -54,8 +54,8 @@
                     android:ellipsize="end"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_vertical"
-                    android:paddingLeft="30dp"
                     android:maxLines="1"
+                    android:paddingLeft="30dp"
                     android:textColor="@color/colorTextWhite"
                     android:textSize="15sp" />
 

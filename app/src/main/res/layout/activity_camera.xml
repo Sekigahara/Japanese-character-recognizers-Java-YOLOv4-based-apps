@@ -3,13 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="60dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="560dp"
-        android:paddingTop="30dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="30dp">
 
         <TextView
             android:id="@+id/textView"
@@ -17,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:text="Taken Image"
-            android:textColor="@color/myText"/>
+            android:textColor="@color/myText" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -26,7 +27,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/ivMainPhoto"

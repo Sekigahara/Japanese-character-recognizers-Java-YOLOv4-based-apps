@@ -43,6 +43,7 @@ public class CameraFragment extends BaseFragment<CameraActivity, CameraContract.
         mPresenter = new CameraPresenter(this, activity);
         mPresenter.start();
 
+        Toast.makeText(activity, imagePath.toString(), Toast.LENGTH_SHORT).show();
         detect(imagePath);
 
         mRecyclerview = fragmentView.findViewById(R.id.rvCamera);

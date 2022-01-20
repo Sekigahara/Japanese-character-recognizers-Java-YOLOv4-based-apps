@@ -6,12 +6,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
+
+import com.example.yoloapps.BuildConfig;
 
 import java.io.File;
 import java.util.Calendar;
@@ -32,6 +35,7 @@ public class MainMenuPresenter implements MainMenuContract.Presenter{
     public void toCamera(PackageManager packageManager){
         if (packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)){
             File dir = new File(Environment.getExternalStorageDirectory(), context.getApplicationContext().getPackageName() + ".provider");
+            //File dir = new File(context.getFilesDir(), context.getApplicationContext().getPackageName() + ".provider");
             if (!dir.exists())
                 dir.mkdirs();
 
