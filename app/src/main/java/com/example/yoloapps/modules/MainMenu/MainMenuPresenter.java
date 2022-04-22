@@ -14,8 +14,6 @@ import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 
-import com.example.yoloapps.BuildConfig;
-
 import java.io.File;
 import java.util.Calendar;
 
