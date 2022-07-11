@@ -1,5 +1,7 @@
 package com.example.yoloapps.modules.Camera;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -7,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,11 +96,16 @@ public class CameraFragment extends BaseFragment<CameraActivity, CameraContract.
     }
 
     private void detect(Uri uriPath){
-        Bitmap tempImg = mPresenter.rotationCheck(uriPath);
+        Bitmap tempImg = null;
+        tempImg = mPresenter.rotationCheck(uriPath);
+
         //change below
         //String filename = mPresenter.uriToFilename(uriPath);
         //Toast.makeText(activity, filename, Toast.LENGTH_LONG).show();
         //File imgFile = mPresenter.bmpToFile(tempImg, filename);
+        if(tempImg == null){
+            Toast.makeText(getContext(), uriPath.toString(), Toast.LENGTH_SHORT).show();
+        }
         String encodedImg = mPresenter.encodeToBase64(tempImg);
 
         //mPresenter.getDetection(encodedImg);

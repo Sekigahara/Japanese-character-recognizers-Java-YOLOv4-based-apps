@@ -36,14 +36,19 @@ import com.example.yoloapps.modules.Camera.CameraActivity;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 
 public class MainMenuFragment extends BaseFragment<MainMenuActivity, MainMenuContract.Presenter> implements MainMenuContract.View{
     Button btPhoto;
+    Button btGalery;
     private static final int CAMERA_PIC_REQUEST = 1888;
     private static final int EXTERNAL_STORAGE_WRITE = 1889;
     private static final int EXTERNAL_STORAGE_READ = 1890;
+    private static final int PICK_IMAGE = 1232;
     private Uri uriFilePath;
 
     public MainMenuFragment(){
@@ -57,6 +62,7 @@ public class MainMenuFragment extends BaseFragment<MainMenuActivity, MainMenuCon
         mPresenter.start();
 
         btPhoto = fragmentView.findViewById(R.id.bt_photo);
+        btGalery = fragmentView.findViewById(R.id.bt_photo_galery);
         PackageManager packageManager = getActivity().getPackageManager();
 
         checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, EXTERNAL_STORAGE_WRITE);
@@ -64,6 +70,23 @@ public class MainMenuFragment extends BaseFragment<MainMenuActivity, MainMenuCon
             public void onClick(View view){
                 checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE, CAMERA_PIC_REQUEST);
                 mPresenter.toCamera(packageManager);
+            }
+        });
+
+        btGalery.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View view){
+                checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, EXTERNAL_STORAGE_READ);
+                //checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, EXTERNAL_STORAGE_READ);
+                Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                getIntent.setType("image/*");
+
+                Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickIntent.setType("image/*");
+
+                Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+                startActivityForResult(chooserIntent, PICK_IMAGE);
             }
         });
 
@@ -97,6 +120,7 @@ public class MainMenuFragment extends BaseFragment<MainMenuActivity, MainMenuCon
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == CAMERA_PIC_REQUEST){
             if(resultCode == RESULT_OK){
                 activity.finishActivity(requestCode);
@@ -105,6 +129,58 @@ public class MainMenuFragment extends BaseFragment<MainMenuActivity, MainMenuCon
                 Intent intent = new Intent(activity, MainMenuActivity.class);
                 startActivity(intent);
                 activity.finish();
+            }
+        }else if(requestCode == PICK_IMAGE) {
+            if (resultCode == RESULT_OK) {
+
+                Bitmap data_bmp = null;
+                try {
+                    InputStream inputStream = activity.getContentResolver().openInputStream(data.getData());
+                    data_bmp = BitmapFactory.decodeStream(inputStream);
+                } catch (FileNotFoundException e) {
+                    Toast.makeText(getContext(), "Error pick image", Toast.LENGTH_SHORT).show();
+                }
+
+                File tempDir = Environment.getExternalStorageDirectory();
+                tempDir = new File(tempDir.getAbsolutePath() + "/.temp/");
+                tempDir.mkdir();
+                File tempFile = null;
+                try {
+                    tempFile = File.createTempFile(title, ".png", tempDir);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                data_bmp.compress(Bitmap.CompressFormat.PNG, 0, bytes);
+                byte[] bitmapData = bytes.toByteArray();
+
+                //write the bytes in file
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(tempFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    fos.write(bitmapData);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    fos.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                activity.finishActivity(requestCode);
+                cameraActivityRedirect(Uri.fromFile(tempFile).toString());
+            }else if(resultCode == RESULT_CANCELED){
+                Toast.makeText(getContext(), "Error pick image", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -120,6 +196,8 @@ public class MainMenuFragment extends BaseFragment<MainMenuActivity, MainMenuCon
                 Toast.makeText(getContext(), "Camera Permission already granted", Toast.LENGTH_SHORT).show();
             }else if(requestCode == EXTERNAL_STORAGE_WRITE){
                 Toast.makeText(getContext(), "Storage Permission already granted", Toast.LENGTH_SHORT).show();
+            }else if(requestCode == EXTERNAL_STORAGE_READ){
+                Toast.makeText(getContext(), "Storage read Permission already granted", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -154,9 +232,9 @@ public class MainMenuFragment extends BaseFragment<MainMenuActivity, MainMenuCon
         }
     }
 
-    private void cameraActivityRedirect(String path){
+    private void cameraActivityRedirect(String path1){
         Intent intent = new Intent(activity, CameraActivity.class);
-        intent.putExtra("uri", uriFilePath.toString());
+        intent.putExtra("uri", path1.toString());
         startActivity(intent);
         activity.finish();
     }

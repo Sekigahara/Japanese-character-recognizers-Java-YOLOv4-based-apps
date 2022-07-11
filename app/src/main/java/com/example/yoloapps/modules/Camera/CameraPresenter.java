@@ -185,5 +185,4 @@ public class CameraPresenter implements CameraContract.Presenter{
 
         return image;
     }
-
 }
