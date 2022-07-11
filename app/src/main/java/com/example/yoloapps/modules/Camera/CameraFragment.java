@@ -1,7 +1,10 @@
 package com.example.yoloapps.modules.Camera;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,12 +25,14 @@ import com.example.yoloapps.model.SubResponse;
 import com.example.yoloapps.modules.MainMenu.MainMenuActivity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class CameraFragment extends BaseFragment<CameraActivity, CameraContract.Presenter> implements CameraContract.View{
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    private ProgressDialog dialog;
     RecyclerView mRecyclerview;
     ImageView ivPhoto;
     TextView textView;
@@ -43,8 +48,13 @@ public class CameraFragment extends BaseFragment<CameraActivity, CameraContract.
         mPresenter = new CameraPresenter(this, activity);
         mPresenter.start();
 
+        if(getActivity() != null){
+            dialog = new ProgressDialog(getActivity());
+        }
+
         Toast.makeText(activity, imagePath.toString(), Toast.LENGTH_SHORT).show();
-        detect(imagePath);
+        onPreExecute();
+        onPostExecute(doInBackground());
 
         mRecyclerview = fragmentView.findViewById(R.id.rvCamera);
         mRecyclerview.setHasFixedSize(true);
@@ -60,10 +70,37 @@ public class CameraFragment extends BaseFragment<CameraActivity, CameraContract.
         return fragmentView;
     }
 
+    protected void onPreExecute() {
+        this.dialog.setMessage("loading...");
+        this.dialog.show();
+    }
+
+    protected Boolean doInBackground() {
+        // call your web service here and do other stuff(wait).
+        // return true when success else false
+        detect(imagePath);
+
+        return true;
+    }
+
+    protected void onPostExecute(final Boolean result) {
+        if (this.dialog.isShowing()) { // if dialog box showing = true
+            this.dialog.dismiss(); // dismiss it
+        }
+        if (result.booleanValue()) {
+            //also show register success dialog
+        }
+    }
+
     private void detect(Uri uriPath){
         Bitmap tempImg = mPresenter.rotationCheck(uriPath);
+        //change below
+        //String filename = mPresenter.uriToFilename(uriPath);
+        //Toast.makeText(activity, filename, Toast.LENGTH_LONG).show();
+        //File imgFile = mPresenter.bmpToFile(tempImg, filename);
         String encodedImg = mPresenter.encodeToBase64(tempImg);
 
+        //mPresenter.getDetection(encodedImg);
         mPresenter.getDetection(encodedImg);
     }
 

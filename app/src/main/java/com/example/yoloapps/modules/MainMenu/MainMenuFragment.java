@@ -106,7 +106,6 @@ public class MainMenuFragment extends BaseFragment<MainMenuActivity, MainMenuCon
                 startActivity(intent);
                 activity.finish();
             }
-
         }
     }
 

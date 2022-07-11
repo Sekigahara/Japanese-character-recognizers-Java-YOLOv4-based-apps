@@ -1,6 +1,7 @@
 package com.example.yoloapps.modules.helper;
 
 import com.example.yoloapps.model.Response;
+import com.example.yoloapps.model.SendImage;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -12,6 +13,6 @@ public interface ApiService {
     @Headers({"Accept: application/json"})
     @POST("detect")
     Call<Response> imageClassification(
-            @Body Response response
+            @Body SendImage sendImage
     );
 }

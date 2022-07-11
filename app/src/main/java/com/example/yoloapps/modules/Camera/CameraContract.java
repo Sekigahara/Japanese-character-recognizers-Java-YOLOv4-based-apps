@@ -8,6 +8,7 @@ import com.example.yoloapps.base.BaseView;
 import com.example.yoloapps.model.Response;
 import com.example.yoloapps.model.SubResponse;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public interface CameraContract {
@@ -22,5 +23,8 @@ public interface CameraContract {
         Bitmap byteToBitmap(byte[] data);
         ArrayList<SubResponse> recycleData(String[] image_arr, String[] predicted_arr);
         Bitmap rotationCheck(Uri selectedImage);
+
+        String uriToFilename(Uri uri);
+        File bmpToFile(Bitmap bmp, String filename);
     }
 }
