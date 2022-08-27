@@ -2,26 +2,30 @@
 Japanese character recognition Application developed with Java Android, the model is YOLOv4.
 The API can be seen [here](https://github.com/Sekigahara/Japanese-character-recognition-YOLOv4-Flask-API).
 
-# Installation
+## Main Repositories
+- High level and low level overview of the project can be found in the main repositories.
+- Main respositories can be found [here](https://github.com/Sekigahara/Multilabel-classification-Japanese-character-with-YOLOv4).
+
+## Installation
 Recommended to utilizes a real device instead of emulator due to the usage of camera.
 - Setup the API first [here](https://github.com/Sekigahara/Japanese-character-recognition-YOLOv4-Flask-API)
 - Android studio is important to run and changes the API IP.
 - Make sure the developer options in setting is enabled.
 - Run and build
 
-# Features
+## Features
 - Take images directly from camera
 - Take images from the gallery
 - Full image displaying the detection result
 - Displaying every detected characters
 
-# Application Architecture
+## Application Architecture
 - IDE : Android Studio
 - Programming Language = Java with Android packages
 - Architecture = MVP
 - Third Party libraries = Retrofit, Gson, okhttp3
 
-# Application sample
+## Application sample
 <b>Tested with Samsung Galaxy J7 Prime with Marshmallow android(Android 8)</b></br>
 <table style="width:100%">
   <tr>
