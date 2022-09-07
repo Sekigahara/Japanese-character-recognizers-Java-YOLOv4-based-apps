@@ -21,9 +21,9 @@ Recommended to utilizes a real device instead of emulator due to the usage of ca
 
 ## Application Architecture
 - IDE : Android Studio
-- Programming Language = Java with Android packages
-- Architecture = MVP
-- Third Party libraries = Retrofit, Gson, okhttp3
+- Programming Language : Java with Android packages
+- Architecture : MVP
+- Third Party libraries : Retrofit, Gson, okhttp3
 
 ## Application sample
 <b>Tested with Samsung Galaxy J7 Prime with Marshmallow android(Android 8)</b></br>
